@@ -1,0 +1,26 @@
+<!-- @dsCard group="Mueble" height=320 subtitle="Un estante con su placa de latón" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Estante — preview</title></head>
+<body>
+<div id="root" style="padding: var(--space-6);"></div>
+<script>
+  var X = window.ExLibris, h = React.createElement;
+  var libros = [
+    ['Comer animales', 'J. S. Foer', 'rojo'],
+    ['Hábitos atómicos', 'James Clear', 'azul'],
+    ['Cómo tomar notas inteligentes', 'Sönke Ahrens', 'verde'],
+    ['Deep Work', 'Cal Newport', 'morado'],
+    ['Sapiens', 'Y. N. Harari', 'amarillo'],
+    ['El hombre en busca de sentido', 'Viktor Frankl', 'azul'],
+    ['Power Apps', 'Curso', 'morado'],
+    ['Curso de Python', 'Día 6', 'amarillo']
+  ];
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h(X.Estante, { rotulo: 'Lecturas' }, libros.map(function (l) {
+      return h(X.Tomo, { key: l[0], titulo: l[0], autor: l[1], color: l[2] });
+    }))
+  );
+</script>
+</body>
+</html>

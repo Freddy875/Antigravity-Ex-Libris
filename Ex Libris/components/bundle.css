@@ -1,0 +1,208 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@400;600&display=swap");
+
+/* ---------- Base ---------- */
+body { margin: 0; background: var(--wall); color: var(--ink); font-family: var(--font-serif); }
+.xl-fila { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-4); padding: var(--space-6); }
+
+/* ---------- Tomo: el lomo de un libro ---------- */
+.xl-tomo {
+  --xl-lomo: var(--spine-azul);
+  --xl-tinta: var(--foil);
+  position: relative; flex: none;
+  inline-size: var(--libro-lomo-ancho); block-size: var(--libro-alto);
+  padding: 0; border: 0; margin: 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 1px 1px;
+  background: var(--xl-lomo); color: var(--xl-tinta);
+  box-shadow: var(--shadow-lomo);
+  font: inherit; cursor: pointer;
+  transition: transform 220ms cubic-bezier(.2, .7, .2, 1), box-shadow 220ms ease;
+}
+/* volumen del cuero: oscuro en los cantos, brillo suave a un tercio */
+.xl-tomo::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(90deg, rgba(0,0,0,.30), rgba(255,255,255,.10) 24%, rgba(255,255,255,0) 46%, rgba(0,0,0,.10) 78%, rgba(0,0,0,.32));
+}
+.xl-tomo--azul     { --xl-lomo: var(--spine-azul); }
+.xl-tomo--rojo     { --xl-lomo: var(--spine-rojo); }
+.xl-tomo--verde    { --xl-lomo: var(--spine-verde); }
+.xl-tomo--morado   { --xl-lomo: var(--spine-morado); }
+.xl-tomo--amarillo { --xl-lomo: var(--spine-amarillo); --xl-tinta: var(--on-spine-light); }
+
+.xl-tomo__banda { position: absolute; left: 0; right: 0; height: 2px; border-top: 1px solid currentColor; border-bottom: 1px solid currentColor; }
+.xl-tomo__banda--arriba { top: 16px; }
+.xl-tomo__banda--abajo  { bottom: 16px; }
+
+/* texto del lomo: vertical, se lee de abajo hacia arriba */
+.xl-tomo__lomo {
+  position: absolute; inset: 30px 0;
+  display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 3px;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+}
+/* título y autor: dos líneas paralelas a lo largo del lomo */
+.xl-tomo__titulo {
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center;
+  font-family: var(--font-rotulo); font-size: 13px; line-height: 16px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+}
+.xl-tomo__autor {
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center;
+  font-family: var(--font-sans); font-size: 10px; line-height: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+}
+
+.xl-tomo:hover { transform: translateY(-10px); }
+.xl-tomo:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; transform: translateY(-10px); }
+.xl-tomo.is-sacado { transform: translateY(-28px); box-shadow: var(--shadow-sacado); z-index: 1; }
+
+/* ---------- Estante ---------- */
+.xl-estante { position: relative; }
+.xl-estante__hueco {
+  background-color: var(--wood-back);
+  box-shadow: var(--shadow-hueco);
+  border-left: var(--space-3) solid var(--wood-shelf);
+  border-right: var(--space-3) solid var(--wood-shelf);
+}
+.xl-estante__libros {
+  display: flex; align-items: flex-end; gap: 3px;
+  padding: var(--space-8) var(--space-4) 0;
+  min-height: var(--libro-alto);
+  overflow-x: auto; overflow-y: hidden; scrollbar-width: thin;
+}
+.xl-estante__tabla {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  height: calc(var(--space-6) + var(--space-1));
+  background-color: var(--wood-shelf-edge);
+  background-image: repeating-linear-gradient(0deg, rgba(0,0,0,.07) 0 1px, transparent 1px 6px);
+  border-top: var(--space-1) solid var(--wood-shelf);
+  box-shadow: var(--shadow-tabla);
+}
+.xl-estante__placa {
+  font-family: var(--font-rotulo); font-size: 11px; line-height: 14px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  padding: 2px var(--space-3);
+  background: var(--brass-plate); color: var(--on-brass);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.28), 0 1px 0 rgba(255,255,255,.12);
+}
+
+/* ---------- Libro abierto ---------- */
+.xl-libro {
+  --xl-lomo: var(--spine-azul);
+  --xl-tinta: var(--foil);
+  position: relative;
+  display: grid; grid-template-columns: 1fr 1fr;
+  inline-size: min(var(--libro-abierto-ancho), 100%);
+  block-size: var(--libro-abierto-alto);
+  margin: 0 auto;
+  perspective: 2400px;
+  color: var(--ink-page);
+}
+.xl-libro--azul     { --xl-lomo: var(--spine-azul); }
+.xl-libro--rojo     { --xl-lomo: var(--spine-rojo); }
+.xl-libro--verde    { --xl-lomo: var(--spine-verde); }
+.xl-libro--morado   { --xl-lomo: var(--spine-morado); }
+.xl-libro--amarillo { --xl-lomo: var(--spine-amarillo); --xl-tinta: var(--on-spine-light); }
+
+.xl-libro__tapa { display: flex; min-height: 0; background: var(--xl-lomo); box-shadow: var(--shadow-sacado); }
+.xl-libro__tapa--izq { padding: var(--space-3) 0 var(--space-3) var(--space-3); border-radius: var(--radius-md) 0 0 var(--radius-md); }
+.xl-libro__tapa--der { padding: var(--space-3) var(--space-3) var(--space-3) 0; border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+
+.xl-pagina {
+  position: relative; flex: 1; min-width: 0; overflow: auto;
+  padding: var(--space-8) var(--space-6) var(--space-6);
+  background: var(--paper);
+  font-family: var(--font-serif); font-size: 16px; line-height: 24px;
+}
+.xl-pagina--izq { box-shadow: var(--shadow-pliegue); border-right: 1px solid var(--paper-edge); }
+.xl-pagina--der { box-shadow: var(--shadow-pliegue-der); }
+.xl-pagina__categoria { margin: 0 0 var(--space-2); font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-page-accent); }
+.xl-pagina__titulo { margin: 0; font-size: 30px; line-height: 36px; font-weight: 500; color: var(--ink-page); text-wrap: balance; }
+.xl-pagina__autor { margin: var(--space-2) 0 0; font-size: 18px; line-height: 28px; font-style: italic; color: var(--ink-page-muted); }
+.xl-pagina__filete { border: 0; border-top: 1px solid var(--paper-edge); margin: var(--space-4) 0; }
+.xl-pagina__texto p { margin: 0 0 var(--space-3); }
+.xl-pagina__texto ul { margin: 0; padding-left: 1.1em; }
+.xl-pagina__texto li { margin: 0 0 var(--space-2); padding-left: var(--space-1); }
+.xl-pagina__texto li::marker { color: var(--ink-page-accent); }
+
+/* la portada: cubre la hoja derecha y gira sobre el lomo al abrir */
+.xl-libro__portada {
+  position: absolute; top: 0; right: 0; width: 50%; height: 100%;
+  display: flex; padding: var(--space-4);
+  box-sizing: border-box;
+  background: var(--xl-lomo); color: var(--xl-tinta);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  box-shadow: var(--shadow-sacado);
+  transform-origin: left center;
+  backface-visibility: hidden;
+  animation: xl-abrir 900ms 120ms cubic-bezier(.55, 0, .2, 1) both;
+}
+.xl-libro__portada::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(90deg, rgba(0,0,0,.30), rgba(255,255,255,.06) 8%, rgba(255,255,255,0) 30%, rgba(0,0,0,.10));
+}
+.xl-libro__marco {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-3);
+  border: 1px solid currentColor; outline: 1px solid currentColor; outline-offset: -6px;
+  padding: var(--space-6); text-align: center;
+}
+.xl-libro__portada-titulo { font-family: var(--font-rotulo); font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; text-wrap: balance; }
+.xl-libro__portada-autor { font-family: var(--font-serif); font-size: 16px; line-height: 24px; font-style: italic; }
+
+.xl-libro.is-abriendo .xl-libro__tapa--izq { animation: xl-revelar 900ms 120ms ease both; }
+
+@keyframes xl-abrir {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(-180deg); visibility: hidden; }
+}
+@keyframes xl-revelar {
+  0%, 45% { opacity: 0; }
+  70%, 100% { opacity: 1; }
+}
+
+/* ---------- Biblioteca: la sala completa ---------- */
+.xl-biblioteca { padding: var(--space-6); }
+.xl-biblioteca__cabecera { margin: 0 auto var(--space-6); max-width: 960px; }
+.xl-biblioteca__nombre { margin: 0; font-family: var(--font-serif); font-size: 56px; line-height: 60px; font-weight: 500; letter-spacing: -.01em; color: var(--ink); }
+.xl-biblioteca__lema { margin: var(--space-2) 0 0; font-family: var(--font-sans); font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+
+.xl-mueble {
+  max-width: 960px; margin: 0 auto;
+  background-color: var(--wood-shelf);
+  border-top: var(--space-3) solid var(--wood-shelf-edge);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  padding-bottom: var(--space-3);
+  box-shadow: var(--shadow-sacado);
+}
+
+.xl-sala {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--velo);
+  animation: xl-velo 200ms ease both;
+}
+@keyframes xl-velo { from { opacity: 0; } to { opacity: 1; } }
+
+.xl-boton {
+  height: 36px; padding: 0 var(--space-4);
+  font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 600;
+  background: var(--brass-plate); color: var(--on-brass);
+  border: 0; border-radius: var(--radius-md); cursor: pointer;
+}
+.xl-boton:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+/* ---------- Pantallas estrechas: una sola hoja, con desplazamiento ---------- */
+@media (max-width: 640px) {
+  .xl-libro { grid-template-columns: 1fr; block-size: auto; max-block-size: calc(100vh - 120px); overflow: auto; }
+  .xl-libro__tapa--izq { padding: var(--space-3) var(--space-3) 0; border-radius: var(--radius-md) var(--radius-md) 0 0; }
+  .xl-libro__tapa--der { padding: 0 var(--space-3) var(--space-3); border-radius: 0 0 var(--radius-md) var(--radius-md); }
+  .xl-pagina--izq { box-shadow: none; border-right: 0; border-bottom: 1px solid var(--paper-edge); }
+  .xl-pagina--der { box-shadow: none; }
+  .xl-libro__portada { width: 100%; border-radius: var(--radius-md); }
+  .xl-biblioteca__nombre { font-size: 40px; line-height: 44px; }
+}
+
+/* ---------- Movimiento reducido: sin giros ni deslizamientos ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .xl-tomo { transition: none; }
+  .xl-libro__portada { display: none; }
+  .xl-libro.is-abriendo .xl-libro__tapa--izq, .xl-sala { animation: none; }
+}

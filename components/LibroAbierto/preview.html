@@ -1,0 +1,26 @@
+<!-- @dsCard group="Libros" height=540 subtitle="La portada gira sobre el lomo y deja ver las dos hojas" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>LibroAbierto — preview</title></head>
+<body>
+<div id="root" style="padding: var(--space-6);"></div>
+<script>
+  var X = window.ExLibris, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h(X.LibroAbierto, {
+      titulo: 'Hábitos atómicos',
+      autor: 'James Clear',
+      color: 'azul',
+      categoria: 'Libro · Hábitos',
+      resumen: 'Pequeños cambios, repetidos cada día, se acumulan como el interés compuesto.\n\nEl libro propone construir hábitos desde la identidad: no «quiero leer», sino «soy alguien que lee».',
+      encabezado: 'Ideas clave'
+    }, [
+      'Mejorar un 1 % cada día se acumula con el tiempo.',
+      'Cuatro leyes: hacerlo obvio, atractivo, sencillo y satisfactorio.',
+      'Diseñar el entorno pesa más que la fuerza de voluntad.',
+      'Los sistemas importan más que las metas.'
+    ])
+  );
+</script>
+</body>
+</html>

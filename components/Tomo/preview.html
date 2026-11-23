@@ -1,0 +1,20 @@
+<!-- @dsCard group="Libros" height=320 subtitle="Los cinco colores, todos del mismo tamaño; el rojo está sacado" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Tomo — preview</title>
+<style>.muestra { background: var(--wood-back); box-shadow: var(--shadow-hueco); padding-top: var(--space-12); }</style>
+</head>
+<body>
+<div id="root" class="xl-fila muestra"></div>
+<script>
+  var X = window.ExLibris, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
+    h(X.Tomo, { titulo: 'Hábitos atómicos', autor: 'James Clear', color: 'azul' }),
+    h(X.Tomo, { titulo: 'Comer animales', autor: 'J. S. Foer', color: 'rojo', sacado: true }),
+    h(X.Tomo, { titulo: 'Deep Work', autor: 'Cal Newport', color: 'verde' }),
+    h(X.Tomo, { titulo: 'Sapiens', autor: 'Y. N. Harari', color: 'amarillo' }),
+    h(X.Tomo, { titulo: 'Power Apps', autor: 'Curso', color: 'morado' })
+  ));
+</script>
+</body>
+</html>

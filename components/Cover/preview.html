@@ -1,0 +1,56 @@
+<!-- @dsCard height=320 -->
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Ex Libris</title>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--wall); color: var(--ink); font-family: var(--font-serif); overflow: hidden; }
+  .cover { position: relative; width: 960px; height: 320px; overflow: hidden; }
+  .art { position: absolute; top: 0; left: 480px; width: 480px; height: 320px; }
+  .art svg { display: block; }
+  .wood { fill: var(--wood-shelf); }
+  .azul { fill: var(--spine-azul); }
+  .rojo { fill: var(--spine-rojo); }
+  .verde { fill: var(--spine-verde); }
+  .morado { fill: var(--spine-morado); }
+  .banda { fill: var(--wall); }
+  .lomo { rx: var(--radius-sm); }
+  .words { position: absolute; left: var(--space-6); bottom: var(--space-6); max-width: 440px; }
+  .name { margin: 0; font-size: 104px; line-height: .95; font-weight: 500; letter-spacing: -.01em; color: var(--ink); }
+  .tag { margin: var(--space-3) 0 0 4px; font-size: 14px; line-height: 20px; font-family: var(--font-sans); color: var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 480 320" width="480" height="320">
+<!--
+  blocks      wood-shelf 480×48 (la tabla, sangra a la derecha y abajo) · spine-azul, spine-rojo, spine-verde 64×240 de pie · spine-morado 232×48 acostado y sangrando a la derecha — ≈26% de 960×320
+  arrangement tres tomos iguales de pie sobre la tabla y uno acostado; el rojo sube space-6: el libro que se está sacando
+  pattern     bandas de lomo («una sola forma literal: el lomo con sus bandas doradas»), recortadas del fondo wall a space-4 de cada extremo, alto space-1
+  scales      lomos space-8×2 por space-12×5, separación space-1, tabla space-12 de alto; esquinas radius-sm
+-->
+<rect class="wood" x="0" y="272" width="480" height="48"/>
+<rect class="azul lomo" x="32" y="32" width="64" height="240" rx="2"/>
+<rect class="rojo lomo" x="100" y="8" width="64" height="240" rx="2"/>
+<rect class="verde lomo" x="168" y="32" width="64" height="240" rx="2"/>
+<rect class="morado lomo" x="248" y="224" width="240" height="48" rx="2"/>
+<rect class="banda" x="32" y="48" width="64" height="4"/>
+<rect class="banda" x="32" y="252" width="64" height="4"/>
+<rect class="banda" x="100" y="24" width="64" height="4"/>
+<rect class="banda" x="100" y="228" width="64" height="4"/>
+<rect class="banda" x="168" y="48" width="64" height="4"/>
+<rect class="banda" x="168" y="252" width="64" height="4"/>
+<rect class="banda" x="264" y="224" width="4" height="48"/>
+<rect class="banda" x="428" y="224" width="4" height="48"/>
+</svg>
+</div>
+<div class="words">
+<h1 class="name">Ex<br>Libris</h1>
+<p class="tag">Una biblioteca de nogal para tus libros, cursos y notas.</p>
+</div>
+</div>
+</body>
+</html>

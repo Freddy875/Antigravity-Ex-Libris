@@ -1,0 +1,50 @@
+{
+  "manifestVersion": 3,
+  "name": "Ex Libris",
+  "namespace": "ExLibris",
+  "files": [
+    "components/Biblioteca/README.md",
+    "components/Estante/README.md",
+    "components/LibroAbierto/README.md",
+    "components/Tomo/README.md",
+    "components/bundle.css",
+    "components/bundle.js",
+    "components/index.d.ts",
+    "tokens.css"
+  ],
+  "libraries": [
+    {
+      "name": "react",
+      "version": "18",
+      "global": "React"
+    },
+    {
+      "name": "react-dom",
+      "version": "18",
+      "global": "ReactDOM"
+    }
+  ],
+  "components": [
+    {
+      "name": "Tomo",
+      "group": "Libros",
+      "summary": "Un lomo de libro en el estante: un botón del mismo tamaño para todos, con título y autor estampados en vertical."
+    },
+    {
+      "name": "Estante",
+      "group": "Mueble",
+      "summary": "Un estante de nogal: el hueco oscuro donde se paran los libros y la tabla con su placa de latón."
+    },
+    {
+      "name": "LibroAbierto",
+      "group": "Libros",
+      "summary": "El libro abierto: dos hojas de papel entre las tapas del color del lomo, con la portada que gira sobre el lomo al aparecer."
+    },
+    {
+      "name": "Biblioteca",
+      "group": "Mueble",
+      "summary": "La sala completa: cabecera, mueble con sus estantes y el libro abierto sobre un velo cuando tocas un lomo."
+    }
+  ],
+  "assetGroups": []
+}

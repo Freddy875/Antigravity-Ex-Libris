@@ -1,0 +1,144 @@
+/* Ex Libris — generated from tokens.json */
+:root, [data-theme="dia"] {
+  --wall: #f3ead9; /* Fondo de la sala: la pared detrás del mueble. Fondo de página. */
+  --ink: #2b1d12; /* Texto principal sobre `wall` (nombre de la biblioteca, encabezados de la sala). */
+  --ink-muted: #6b5543; /* Texto secundario sobre `wall`: lema, metadatos, ayudas. */
+  --brass: #7d5a1b; /* Acento latón para texto sobre `wall`: enlaces y estado activo. Nunca como fondo de texto largo. */
+  --focus: #f2c869; /* Anillo de foco (2px sólido, 3px de separación) sobre `wood-back`, `wood-shelf` y `velo`, donde viven los elementos interactivos. */
+  --wood-shelf: #6b3f22; /* Nogal de los laterales del mueble y del canto superior de cada tabla. */
+  --wood-shelf-edge: #84502b; /* Frente de la tabla (el borde que ves de la repisa) y corona del mueble. */
+  --wood-back: #3a2214; /* Fondo interior del hueco del estante, detrás de los lomos. */
+  --brass-plate: #c9a24a; /* Placa de latón con el rótulo del estante y botón principal. Texto encima: `on-brass`. */
+  --on-brass: #2b1d12; /* Texto sobre `brass-plate` (placas y botones). */
+  --paper: #fbf6ea; /* Hojas del libro abierto. Siguen claras de noche: es papel bajo la lámpara. */
+  --paper-edge: #e3d3b2; /* Filetes y bordes de hoja sobre `paper`. Decorativo, no para texto. */
+  --ink-page: #2b1d12; /* Texto de lectura sobre `paper`. */
+  --ink-page-muted: #5c4636; /* Autor y notas secundarias sobre `paper`. */
+  --ink-page-accent: #6e4e14; /* Categoría y encabezados pequeños sobre `paper` (tinta latón oscura). */
+  --spine-azul: #1f4e79; /* Lomo azul. Texto encima: `foil`. */
+  --spine-rojo: #8e2a26; /* Lomo rojo. Texto encima: `foil`. */
+  --spine-verde: #2f5d3a; /* Lomo verde. Texto encima: `foil`. */
+  --spine-amarillo: #c99a2e; /* Lomo amarillo (mostaza). Texto encima: `on-spine-light`, nunca `foil`. */
+  --spine-morado: #5b3768; /* Lomo morado. Texto encima: `foil`. */
+  --foil: #f0d58c; /* Dorado estampado: título, autor y bandas sobre los lomos azul, rojo, verde y morado, y sobre las portadas. */
+  --on-spine-light: #2b1d12; /* Título, autor y bandas sobre `spine-amarillo`. */
+  --velo: rgba(28, 18, 10, 0.78); /* Velo de la sala cuando un libro está abierto; oscurece los estantes detrás. */
+  --shadow-lomo: inset 0 -2px 0 rgba(0, 0, 0, 0.25), 1px 0 2px rgba(0, 0, 0, 0.35); /* Cada lomo en reposo: separa un libro del siguiente. */
+  --shadow-sacado: 0 18px 28px rgba(20, 10, 4, 0.45), 0 4px 8px rgba(20, 10, 4, 0.30); /* Libro sacado del estante y libro abierto. */
+  --shadow-hueco: inset 0 14px 18px -8px rgba(0, 0, 0, 0.6), inset 0 -6px 10px -6px rgba(0, 0, 0, 0.5); /* Profundidad del hueco del estante (sombra de la tabla de arriba). */
+  --shadow-tabla: 0 6px 10px rgba(20, 10, 4, 0.35); /* Sombra bajo el frente de cada tabla. */
+  --shadow-pliegue: inset -18px 0 22px -18px rgba(60, 35, 15, 0.45); /* Curvatura de la hoja izquierda hacia el lomo. */
+  --shadow-pliegue-der: inset 18px 0 22px -18px rgba(60, 35, 15, 0.45); /* Curvatura de la hoja derecha hacia el lomo. */
+}
+[data-theme="noche"] {
+  --wall: #1c1410;
+  --ink: #f1e6d2;
+  --ink-muted: #bfae96;
+  --brass: #d4a64a;
+  --wood-shelf: #4a2b17;
+  --wood-shelf-edge: #5e3920;
+  --wood-back: #24150c;
+  --brass-plate: #b88f3a;
+  --paper: #f4ead3;
+  --paper-edge: #d9c7a3;
+}
+:root {
+  --space-1: 4px; /* Separación mínima; relleno vertical de la placa. */
+  --space-2: 8px; /* Entre título y autor en el lomo; entre líneas de metadatos. */
+  --space-3: 12px; /* Grosor de los laterales del mueble y borde de las tapas alrededor de las hojas. */
+  --space-4: 16px; /* Relleno lateral del hueco del estante; separación entre el libro abierto y su botón. */
+  --space-6: 24px; /* Relleno de las páginas; márgenes de la sala. */
+  --space-8: 32px; /* Espacio libre sobre los lomos para poder sacarlos; relleno superior de las páginas. */
+  --space-12: 48px; /* Separación entre la cabecera de la sala y el mueble. */
+  --radius-sm: 2px; /* Esquinas de lomos y placas: casi rectos, como un libro real. */
+  --radius-md: 4px; /* Tapas del libro abierto, botones, mueble. */
+  --radius-lg: 8px; /* Reservado para contenedores grandes fuera del mueble. */
+  --libro-lomo-ancho: 44px; /* Ancho de cada lomo en el estante. */
+  --libro-alto: 220px; /* Alto de cada lomo en el estante. */
+  --libro-abierto-ancho: 760px; /* Ancho máximo del libro abierto (dos hojas). */
+  --libro-abierto-alto: 480px; /* Alto del libro abierto. */
+  --font-serif: "EB Garamond", Garamond, Georgia, serif;
+  --font-rotulo: Cinzel, "Trajan Pro", Georgia, serif;
+  --font-sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --text-display: 500 56px/60px var(--font-serif); /* Nombre de la biblioteca en la cabecera de la sala. */
+  --text-titulo-lg: 500 30px/36px var(--font-serif); /* Título del libro en la página izquierda del libro abierto. */
+  --text-titulo-md: 500 22px/28px var(--font-serif); /* Subtítulos dentro de las páginas. */
+  --text-cuerpo: 400 18px/28px var(--font-serif); /* Texto de lectura en las páginas. */
+  --text-cuerpo-sm: 400 16px/24px var(--font-serif); /* Resúmenes y listas de notas. */
+  --text-cita: italic 400 18px/28px var(--font-serif); /* Autor bajo el título y citas textuales. */
+  --text-lomo: 600 13px/16px var(--font-rotulo); /* Título estampado en el lomo, en vertical, de abajo hacia arriba. */
+  --text-placa: 600 11px/14px var(--font-rotulo); /* Rótulo en la placa de latón del estante. */
+  --text-etiqueta: 600 12px/16px var(--font-sans); /* Categoría sobre el título y autor en el lomo (en mayúsculas). */
+  --text-meta: 400 13px/18px var(--font-sans); /* Datos de interfaz: contadores, ayudas, botones. */
+}
+.display {
+  font-family: var(--font-serif);
+  font-size: 56px;
+  line-height: 60px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.titulo-lg {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.titulo-md {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.cuerpo {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.cuerpo-sm {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.cita {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-style: italic;
+}
+.lomo {
+  font-family: var(--font-rotulo);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.placa {
+  font-family: var(--font-rotulo);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+.etiqueta {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.meta {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+}

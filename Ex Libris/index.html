@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ex Libris — Biblioteca Digital</title>
+  
+  <!-- Tipografías oficiales de Ex Libris -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Enlace a hojas de estilo externas si existen -->
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="components/bundle.css">
+
+  <style>
+    /* Ex Libris — Sistema de Diseño Completo */
+    :root, [data-theme="dia"] {
+      --wall: #f3ead9; /* Fondo de la sala: pared cálida de biblioteca */
+      --ink: #2b1d12; /* Texto principal sobre wall */
+      --ink-muted: #6b5543; /* Texto secundario sobre wall */
+      --brass: #7d5a1b; /* Acento latón para texto y bordes */
+      --focus: #f2c869; /* Anillo de foco */
+      --wood-shelf: #6b3f22; /* Nogal de los laterales y cantos */
+      --wood-shelf-edge: #84502b; /* Frente de la repisa y corona */
+      --wood-back: #3a2214; /* Fondo oscuro del hueco de estante */
+      --brass-plate: #c9a24a; /* Placa de latón */
+      --brass-plate-hover: #d8b259;
+      --on-brass: #2b1d12; /* Texto sobre latón */
+      --paper: #fbf6ea; /* Papel crema del libro abierto */
+      --paper-edge: #e3d3b2; /* Borde y filete de hoja */
+      --ink-page: #2b1d12; /* Texto de lectura */
+      --ink-page-muted: #5c4636; /* Autor y notas */
+      --ink-page-accent: #6e4e14; /* Categoría y subtítulos */
+      --spine-azul: #1f4e79;
+      --spine-rojo: #8e2a26;
+      --spine-verde: #2f5d3a;
+      --spine-amarillo: #c99a2e;
+      --spine-morado: #5b3768;
+      --foil: #f0d58c; /* Dorado estampado en lomos y tapas */
+      --on-spine-light: #2b1d12;
+      --velo: rgba(28, 18, 10, 0.82); /* Velo al abrir el libro */
+      --shadow-lomo: inset 0 -2px 0 rgba(0, 0, 0, 0.25), 1px 0 2px rgba(0, 0, 0, 0.35);
+      --shadow-sacado: 0 18px 28px rgba(20, 10, 4, 0.45), 0 4px 8px rgba(20, 10, 4, 0.30);
+      --shadow-hueco: inset 0 14px 18px -8px rgba(0, 0, 0, 0.6), inset 0 -6px 10px -6px rgba(0, 0, 0, 0.5);
+      --shadow-tabla: 0 6px 10px rgba(20, 10, 4, 0.35);
+      --shadow-pliegue: inset -18px 0 22px -18px rgba(60, 35, 15, 0.45);
+      --shadow-pliegue-der: inset 18px 0 22px -18px rgba(60, 35, 15, 0.45);
+    }
+
+    [data-theme="noche"] {
+      --wall: #1a120c; /* Ambiente nocturno acogedor */
+      --ink: #f2e7d3;
+      --ink-muted: #c4b198;
+      --brass: #e0b458;
+      --wood-shelf: #4a2b17;
+      --wood-shelf-edge: #5e3920;
+      --wood-back: #24150c;
+      --brass-plate: #b88f3a;
+      --brass-plate-hover: #cba24d;
+      --paper: #f4ead3;
+      --paper-edge: #d9c7a3;
+      --velo: rgba(12, 8, 5, 0.88);
+    }
+
+    :root {
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-12: 48px;
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+      --libro-lomo-ancho: 44px;
+      --libro-alto: 220px;
+      --libro-abierto-ancho: 760px;
+      --libro-abierto-alto: 480px;
+      --font-serif: "EB Garamond", Garamond, Georgia, serif;
+      --font-rotulo: "Cinzel", "Trajan Pro", Georgia, serif;
+      --font-sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background-color: var(--wall);
+      color: var(--ink);
+      font-family: var(--font-serif);
+      min-height: 100vh;
+      transition: background-color 300ms ease, color 300ms ease;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ---------- Cabecera de la Sala ---------- */
+    .xl-biblioteca {
+      padding: var(--space-6) var(--space-4) var(--space-12);
+      max-width: 1060px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .xl-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+      border-bottom: 1px solid rgba(125, 90, 27, 0.2);
+      padding-bottom: var(--space-6);
+    }
+
+    .xl-header__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .xl-header__emblem {
+      width: 52px;
+      height: 52px;
+      background: var(--wood-shelf);
+      border: 2px solid var(--brass-plate);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+    }
+
+    .xl-header__emblem svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .xl-biblioteca__nombre {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 46px;
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .xl-biblioteca__lema {
+      margin: 6px 0 0;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 18px;
+      color: var(--ink-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* Barra de herramientas de latón */
+    .xl-toolbar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .xl-search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .xl-search-input {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(125, 90, 27, 0.4);
+      color: var(--ink);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px 6px 30px;
+      outline: none;
+      width: 210px;
+      transition: all 200ms ease;
+    }
+
+    [data-theme="noche"] .xl-search-input {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(212, 166, 74, 0.4);
+    }
+
+    .xl-search-input:focus {
+      border-color: var(--brass-plate);
+      box-shadow: 0 0 0 2px var(--focus);
+      width: 250px;
+    }
+
+    .xl-search-icon {
+      position: absolute;
+      left: 9px;
+      color: var(--ink-muted);
+      pointer-events: none;
+      display: flex;
+    }
+
+    .xl-btn-tool {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--on-brass);
+      background: var(--brass-plate);
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .xl-btn-tool:hover {
+      background: var(--brass-plate-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .xl-btn-tool:active {
+      transform: translateY(0);
+    }
+
+    .xl-btn-tool:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Leyenda de categorías */
+    .xl-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    .xl-legend__item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .xl-legend__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      display: inline-block;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* ---------- El Mueble de Nogal ---------- */
+    .xl-mueble {
+      max-width: 980px;
+      margin: 0 auto;
+      background-color: var(--wood-shelf);
+      border-top: var(--space-3) solid var(--wood-shelf-edge);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      padding-bottom: var(--space-4);
+      box-shadow: var(--shadow-sacado), 0 20px 40px rgba(0,0,0,0.35);
+      position: relative;
+    }
+
+    /* Corona decorativa superior del mueble */
+    .xl-mueble::before {
+      content: "";
+      position: absolute;
+      top: calc(-1 * var(--space-3) - 6px);
+      left: -6px;
+      right: -6px;
+      height: 6px;
+      background: var(--wood-shelf-edge);
+      border-radius: 4px 4px 0 0;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    }
+
+    /* ---------- Estante ---------- */
+    .xl-estante {
+      position: relative;
+    }
+
+    .xl-estante__hueco {
+      background-color: var(--wood-back);
+      box-shadow: var(--shadow-hueco);
+      border-left: var(--space-4) solid var(--wood-shelf);
+      border-right: var(--space-4) solid var(--wood-shelf);
+      position: relative;
+    }
+
+    .xl-estante__libros {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      padding: var(--space-8) var(--space-4) 0;
+      min-height: var(--libro-alto);
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: var(--wood-shelf-edge) transparent;
+    }
+
+    .xl-estante__libros::-webkit-scrollbar {
+      height: 6px;
+    }
+    .xl-estante__libros::-webkit-scrollbar-thumb {
+      background: var(--wood-shelf-edge);
+      border-radius: 3px;
+    }
+
+    .xl-estante__tabla {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: calc(var(--space-6) + var(--space-1));
+      background-color: var(--wood-shelf-edge);
+      background-image: repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 1px, transparent 1px 6px);
+      border-top: var(--space-1) solid var(--wood-shelf);
+      box-shadow: var(--shadow-tabla);
+    }
+
+    .xl-estante__placa {
+      font-family: var(--font-rotulo);
+      font-size: 11px;
+      line-height: 14px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      padding: 3px var(--space-4);
+      background: var(--brass-plate);
+      color: var(--on-brass);
+      border-radius: var(--radius-sm);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.2);
+      border: 1px solid rgba(75, 45, 15, 0.4);
+    }
+
+    /* ---------- Tomo (Lomo del libro) ---------- */
+    .xl-tomo {
+      --xl-lomo: var(--spine-azul);
+      --xl-tinta: var(--foil);
+      position: relative;
+      flex: none;
+      inline-size: var(--libro-lomo-ancho);
+      block-size: var(--libro-alto);
+      padding: 0;
+      border: 0;
+      margin: 0;
+      border-radius: var(--radius-sm) var(--radius-sm) 1px 1px;
+      background: var(--xl-lomo);
+      color: var(--xl-tinta);
+      box-shadow: var(--shadow-lomo);
+      font: inherit;
+      cursor: pointer;
+      transition: transform 220ms cubic-bezier(.2, .7, .2, 1), box-shadow 220ms ease, opacity 200ms ease;
+      user-select: none;
+      text-align: left;
+    }
+
+    /* Volumen del cuero en el lomo */
+    .xl-tomo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(0,0,0,.32), rgba(255,255,255,.12) 24%, rgba(255,255,255,0) 46%, rgba(0,0,0,.10) 78%, rgba(0,0,0,.34));
+    }
+
+    .xl-tomo--azul     { --xl-lomo: var(--spine-azul); --xl-tinta: var(--foil); }
+    .xl-tomo--rojo     { --xl-lomo: var(--spine-rojo); --xl-tinta: var(--foil); }
+    .xl-tomo--verde    { --xl-lomo: var(--spine-verde); --xl-tinta: var(--foil); }
+    .xl-tomo--morado   { --xl-lomo: var(--spine-morado); --xl-tinta: var(--foil); }
+    .xl-tomo--amarillo { --xl-lomo: var(--spine-amarillo); --xl-tinta: var(--on-spine-light); }
+
+    /* Bandas doradas arriba y abajo */
+    .xl-tomo__banda {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      opacity: 0.9;
+    }
+    .xl-tomo__banda--arriba { top: 16px; }
+    .xl-tomo__banda--abajo  { bottom: 16px; }
+
+    /* Texto vertical del lomo (de abajo hacia arriba) */
+    .xl-tomo__lomo {
+      position: absolute;
+      inset: 30px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      gap: 4px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .xl-tomo__titulo {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-align: center;
+      font-family: var(--font-rotulo);
+      font-size: 13px;
+      line-height: 16px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    }
+
+    .xl-tomo__autor {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 10px;
+      line-height: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    /* Interacciones con el tomo */
+    .xl-tomo:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 14px rgba(0,0,0,0.4);
+    }
+
+    .xl-tomo:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+      transform: translateY(-10px);
+    }
+
+    .xl-tomo.is-sacado {
+      transform: translateY(-28px) !important;
+      box-shadow: var(--shadow-sacado) !important;
+      z-index: 10;
+    }
+
+    .xl-tomo.is-hidden {
+      opacity: 0.2;
+      transform: translateY(0);
+      pointer-events: none;
+    }
+
+    /* ---------- Velo de la Sala (Modal) ---------- */
+    .xl-sala {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-4);
+      padding: var(--space-6);
+      background: var(--velo);
+      backdrop-filter: blur(2px);
+      animation: xl-velo 220ms ease both;
+    }
+
+    @keyframes xl-velo {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ---------- Libro Abierto ---------- */
+    .xl-libro {
+      --xl-lomo: var(--spine-azul);
+      --xl-tinta: var(--foil);
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      inline-size: min(var(--libro-abierto-ancho), 94vw);
+      block-size: min(var(--libro-abierto-alto), 82vh);
+      margin: 0 auto;
+      perspective: 2400px;
+      color: var(--ink-page);
+    }
+
+    .xl-libro--azul     { --xl-lomo: var(--spine-azul); --xl-tinta: var(--foil); }
+    .xl-libro--rojo     { --xl-lomo: var(--spine-rojo); --xl-tinta: var(--foil); }
+    .xl-libro--verde    { --xl-lomo: var(--spine-verde); --xl-tinta: var(--foil); }
+    .xl-libro--morado   { --xl-lomo: var(--spine-morado); --xl-tinta: var(--foil); }
+    .xl-libro--amarillo { --xl-lomo: var(--spine-amarillo); --xl-tinta: var(--on-spine-light); }
+
+    .xl-libro__tapa {
+      display: flex;
+      min-height: 0;
+      background: var(--xl-lomo);
+      box-shadow: var(--shadow-sacado);
+      position: relative;
+    }
+
+    .xl-libro__tapa--izq {
+      padding: var(--space-3) 0 var(--space-3) var(--space-3);
+      border-radius: var(--radius-md) 0 0 var(--radius-md);
+    }
+
+    .xl-libro__tapa--der {
+      padding: var(--space-3) var(--space-3) var(--space-3) 0;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+
+    .xl-pagina {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+      padding: var(--space-8) var(--space-6) var(--space-6);
+      background: var(--paper);
+      font-family: var(--font-serif);
+      font-size: 16px;
+      line-height: 25px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--paper-edge) transparent;
+    }
+
+    .xl-pagina::-webkit-scrollbar {
+      width: 5px;
+    }
+    .xl-pagina::-webkit-scrollbar-thumb {
+      background: var(--paper-edge);
+      border-radius: 3px;
+    }
+
+    .xl-pagina--izq {
+      box-shadow: var(--shadow-pliegue);
+      border-right: 1px solid var(--paper-edge);
+    }
+
+    .xl-pagina--der {
+      box-shadow: var(--shadow-pliegue-der);
+    }
+
+    .xl-pagina__categoria {
+      margin: 0 0 var(--space-2);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ink-page-accent);
+    }
+
+    .xl-pagina__titulo {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 28px;
+      line-height: 34px;
+      font-weight: 500;
+      color: var(--ink-page);
+      text-wrap: balance;
+    }
+
+    .xl-pagina__autor {
+      margin: var(--space-2) 0 0;
+      font-family: var(--font-serif);
+      font-size: 18px;
+      line-height: 26px;
+      font-style: italic;
+      color: var(--ink-page-muted);
+    }
+
+    .xl-pagina__filete {
+      border: 0;
+      border-top: 1px solid var(--paper-edge);
+      margin: var(--space-4) 0;
+    }
+
+    .xl-pagina__texto p {
+      margin: 0 0 var(--space-3);
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    .xl-pagina__texto ul {
+      margin: 0;
+      padding-left: 1.2em;
+    }
+
+    .xl-pagina__texto li {
+      margin: 0 0 var(--space-2);
+      padding-left: var(--space-1);
+    }
+
+    .xl-pagina__texto li::marker {
+      color: var(--ink-page-accent);
+    }
+
+    /* Portada 3D que gira sobre el lomo */
+    .xl-libro__portada {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      display: flex;
+      padding: var(--space-4);
+      box-sizing: border-box;
+      background: var(--xl-lomo);
+      color: var(--xl-tinta);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      box-shadow: var(--shadow-sacado);
+      transform-origin: left center;
+      backface-visibility: hidden;
+      z-index: 20;
+      animation: xl-abrir 900ms 120ms cubic-bezier(.55, 0, .2, 1) both;
+    }
+
+    .xl-libro__portada::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(0,0,0,.30), rgba(255,255,255,.08) 8%, rgba(255,255,255,0) 30%, rgba(0,0,0,.10));
+    }
+
+    .xl-libro__marco {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      border: 1px solid currentColor;
+      outline: 1px solid currentColor;
+      outline-offset: -6px;
+      padding: var(--space-6);
+      text-align: center;
+    }
+
+    .xl-libro__portada-titulo {
+      font-family: var(--font-rotulo);
+      font-size: 22px;
+      line-height: 28px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-wrap: balance;
+    }
+
+    .xl-libro__portada-autor {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      line-height: 24px;
+      font-style: italic;
+    }
+
+    .xl-libro.is-abriendo .xl-libro__tapa--izq {
+      animation: xl-revelar 900ms 120ms ease both;
+    }
+
+    @keyframes xl-abrir {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(-180deg); visibility: hidden; }
+    }
+
+    @keyframes xl-revelar {
+      0%, 45% { opacity: 0; }
+      70%, 100% { opacity: 1; }
+    }
+
+    /* Barra de botones bajo el libro abierto */
+    .xl-sala__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .xl-boton {
+      height: 38px;
+      padding: 0 var(--space-6);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+      background: var(--brass-plate);
+      color: var(--on-brass);
+      border: 1px solid rgba(0,0,0,0.25);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 150ms ease, transform 150ms ease;
+    }
+
+    .xl-boton:hover {
+      background: var(--brass-plate-hover);
+      transform: translateY(-1px);
+    }
+
+    .xl-boton:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    /* Modal para agregar nuevo tomo */
+    .xl-dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      background: rgba(20, 12, 6, 0.75);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-4);
+      animation: xl-velo 200ms ease both;
+    }
+
+    .xl-modal {
+      background: var(--paper);
+      color: var(--ink-page);
+      border: 3px solid var(--wood-shelf);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sacado);
+      width: 100%;
+      max-width: 520px;
+      padding: var(--space-6);
+      font-family: var(--font-sans);
+    }
+
+    .xl-modal__header {
+      border-bottom: 1px solid var(--paper-edge);
+      padding-bottom: var(--space-3);
+      margin-bottom: var(--space-4);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .xl-modal__title {
+      font-family: var(--font-rotulo);
+      font-size: 18px;
+      margin: 0;
+      color: var(--ink-page-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .xl-form-group {
+      margin-bottom: var(--space-3);
+    }
+
+    .xl-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+      color: var(--ink-page-accent);
+    }
+
+    .xl-input, .xl-select, .xl-textarea {
+      width: 100%;
+      padding: 8px 10px;
+      font-family: var(--font-serif);
+      font-size: 15px;
+      border: 1px solid var(--paper-edge);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--ink-page);
+      outline: none;
+    }
+
+    .xl-input:focus, .xl-select:focus, .xl-textarea:focus {
+      border-color: var(--brass-plate);
+      box-shadow: 0 0 0 2px var(--focus);
+    }
+
+    .xl-textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .xl-color-picker {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .xl-color-option {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 150ms ease;
+    }
+
+    .xl-color-option:hover {
+      transform: scale(1.1);
+    }
+
+    .xl-color-option.is-selected {
+      border-color: var(--focus);
+      box-shadow: 0 0 0 2px var(--ink-page);
+    }
+
+    .xl-modal__footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+      border-top: 1px solid var(--paper-edge);
+      padding-top: var(--space-4);
+    }
+
+    /* Pie de página */
+    .xl-footer {
+      text-align: center;
+      padding: var(--space-8) var(--space-4);
+      margin-top: auto;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    /* ---------- Pantallas Estrechas (<640px) ---------- */
+    @media (max-width: 640px) {
+      .xl-libro {
+        grid-template-columns: 1fr;
+        block-size: auto;
+        max-block-size: calc(100vh - 120px);
+        overflow-y: auto;
+      }
+      .xl-libro__tapa--izq {
+        padding: var(--space-3) var(--space-3) 0;
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+      }
+      .xl-libro__tapa--der {
+        padding: 0 var(--space-3) var(--space-3);
+        border-radius: 0 0 var(--radius-md) var(--radius-md);
+      }
+      .xl-pagina--izq {
+        box-shadow: none;
+        border-right: 0;
+        border-bottom: 1px solid var(--paper-edge);
+      }
+      .xl-pagina--der {
+        box-shadow: none;
+      }
+      .xl-libro__portada {
+        width: 100%;
+        border-radius: var(--radius-md);
+      }
+      .xl-biblioteca__nombre {
+        font-size: 34px;
+      }
+      .xl-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .xl-search-input {
+        width: 160px;
+      }
+    }
+
+    /* ---------- Modo de Movimiento Reducido ---------- */
+    @media (prefers-reduced-motion: reduce) {
+      .xl-tomo { transition: none; }
+      .xl-libro__portada { display: none; }
+      .xl-libro.is-abriendo .xl-libro__tapa--izq, .xl-sala { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="xl-biblioteca">
+    <!-- Cabecera de la Sala -->
+    <header class="xl-header">
+      <div class="xl-header__brand">
+        <div class="xl-header__emblem" aria-hidden="true">
+          <!-- Ícono de nogal y latón -->
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="4" y="4" width="24" height="24" rx="2" stroke="var(--brass-plate)" stroke-width="2"/>
+            <path d="M9 10H23M9 16H23M9 22H17" stroke="var(--brass-plate)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="xl-biblioteca__nombre">Ex Libris</h1>
+          <p class="xl-biblioteca__lema" id="biblioteca-lema">Cargando biblioteca...</p>
+        </div>
+      </div>
+
+      <!-- Barra de herramientas superior -->
+      <div class="xl-toolbar">
+        <!-- Buscador en tiempo real -->
+        <div class="xl-search-box">
+          <span class="xl-search-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input type="text" id="searchInput" class="xl-search-input" placeholder="Buscar título, autor..." aria-label="Buscar en la biblioteca">
+        </div>
+
+        <!-- Botón para añadir nuevo tomo -->
+        <button type="button" class="xl-btn-tool" id="btnNuevoTomo" title="Añadir un nuevo libro al mueble">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Nuevo tomo</span>
+        </button>
+
+        <!-- Conmutador de Sonido Táctil -->
+        <button type="button" class="xl-btn-tool" id="btnToggleAudio" title="Activar/desactivar sonido táctil de biblioteca">
+          <svg id="iconAudioOn" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg id="iconAudioOff" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+
+        <!-- Conmutador Día / Noche (Lámpara de biblioteca) -->
+        <button type="button" class="xl-btn-tool" id="btnToggleTheme" title="Cambiar iluminación (Día / Noche)">
+          <svg id="iconLuzDia" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="iconLuzNoche" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Leyenda de colores oficiales -->
+    <div class="xl-legend" aria-hidden="true">
+      <span>Código de lomos:</span>
+      <span class="xl-legend__item"><span class="xl-legend__dot" style="background:var(--spine-azul);"></span>Libros</span>
+      <span class="xl-legend__item"><span class="xl-legend__dot" style="background:var(--spine-verde);"></span>Cursos y Aprendizaje</span>
+      <span class="xl-legend__item"><span class="xl-legend__dot" style="background:var(--spine-morado);"></span>Tecnología y Trabajo</span>
+      <span class="xl-legend__item"><span class="xl-legend__dot" style="background:var(--spine-rojo);"></span>Ensayos y Videos</span>
+      <span class="xl-legend__item"><span class="xl-legend__dot" style="background:var(--spine-amarillo);"></span>Historia y Notas</span>
+    </div>
+
+    <!-- Mueble Principal de Nogal -->
+    <main class="xl-mueble" id="muebleContainer" role="region" aria-label="Mueble de estantería de libros"></main>
+
+    <footer class="xl-footer">
+      Ex Libris · Biblioteca de nogal para tus libros, cursos y notas.
+    </footer>
+  </div>
+
+  <!-- Contenedor del Libro Abierto (Modal con velo) -->
+  <div id="modalSala" class="xl-sala" role="dialog" aria-modal="true" style="display: none;"></div>
+
+  <!-- Modal para Agregar Nuevo Tomo -->
+  <div id="dialogNuevoTomo" class="xl-dialog-backdrop" style="display: none;">
+    <div class="xl-modal" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+      <div class="xl-modal__header">
+        <h3 id="dialogTitle" class="xl-modal__title">Añadir Tomo al Estante</h3>
+        <button type="button" id="btnCerrarModal" class="xl-btn-tool" style="padding: 2px 8px;">✕</button>
+      </div>
+      <form id="formNuevoTomo">
+        <div class="xl-form-group">
+          <label class="xl-label" for="inpTitulo">Título *</label>
+          <input type="text" id="inpTitulo" class="xl-input" required placeholder="Ej. El arte de la guerra">
+        </div>
+        <div class="xl-form-group">
+          <label class="xl-label" for="inpAutor">Autor</label>
+          <input type="text" id="inpAutor" class="xl-input" placeholder="Ej. Sun Tzu">
+        </div>
+        <div class="xl-form-group">
+          <label class="xl-label" for="selEstante">Estante *</label>
+          <select id="selEstante" class="xl-select"></select>
+        </div>
+        <div class="xl-form-group">
+          <label class="xl-label" for="inpCategoria">Categoría / Género</label>
+          <input type="text" id="inpCategoria" class="xl-input" placeholder="Ej. Libro · Filosofía militar">
+        </div>
+        <div class="xl-form-group">
+          <label class="xl-label">Color del Lomo *</label>
+          <div class="xl-color-picker" id="colorPicker">
+            <div class="xl-color-option is-selected" data-color="azul" style="background:var(--spine-azul);" title="Azul (Libro)"></div>
+            <div class="xl-color-option" data-color="rojo" style="background:var(--spine-rojo);" title="Rojo (Ensayo / Video)"></div>
+            <div class="xl-color-option" data-color="verde" style="background:var(--spine-verde);" title="Verde (Curso / Práctica)"></div>
+            <div class="xl-color-option" data-color="amarillo" style="background:var(--spine-amarillo);" title="Amarillo (Historia / Notas)"></div>
+            <div class="xl-color-option" data-color="morado" style="background:var(--spine-morado);" title="Morado (Productividad / Tech)"></div>
+          </div>
+          <input type="hidden" id="inpHiddenColor" value="azul">
+        </div>
+        <div class="xl-form-group">
+          <label class="xl-label" for="inpResumen">Resumen (Página Izquierda)</label>
+          <textarea id="inpResumen" class="xl-textarea" rows="3" placeholder="Breve sinopsis o introducción del tomo..."></textarea>
+        </div>
+        <div class="xl-form-group">
+          <label class="xl-label" for="inpNotas">Notas o Puntos Clave (Página Derecha, una idea por línea)</label>
+          <textarea id="inpNotas" class="xl-textarea" rows="3" placeholder="Idea clave 1&#10;Idea clave 2&#10;Idea clave 3"></textarea>
+        </div>
+        <div class="xl-modal__footer">
+          <button type="button" class="xl-btn-tool" id="btnCancelarNuevo" style="background: transparent; color: var(--ink-page-muted); border: 1px solid var(--paper-edge);">Cancelar</button>
+          <button type="submit" class="xl-boton">Colocar en el estante</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================================
+       EX LIBRIS — MOTOR DE BIBLIOTECA DIGITAL
+       ===================================================================== */
+
+    // Catálogo inicial canónico de Ex Libris
+    const CATALOGO_INICIAL = [
+      {
+        rotulo: 'Lecturas',
+        libros: [
+          {
+            id: 'lecturas-1',
+            titulo: 'Comer animales',
+            autor: 'Jonathan Safran Foer',
+            color: 'rojo',
+            categoria: 'Libro · Ensayo',
+            resumen: 'Una investigación personal y rigurosa que comienza con una sencilla pregunta de padre: qué darle de comer a su hijo recién nacido.\n\nEl autor explora el significado cultural de la comida y la desconexión moral contemporánea frente al plato.',
+            encabezado: 'Puntos clave',
+            notas: [
+              'Examina la ganadería industrial intensiva y sus profundos efectos en los animales, la salud pública y el ecosistema.',
+              'Mezcla reportaje de campo, testimonios de granjeros tradicionales, activistas y memoria familiar.',
+              'Plantea que comer nunca es un acto neutro; es una afirmación sobre el tipo de mundo en el que queremos vivir.'
+            ]
+          },
+          {
+            id: 'lecturas-2',
+            titulo: 'Hábitos atómicos',
+            autor: 'James Clear',
+            color: 'azul',
+            categoria: 'Libro · Hábitos y Conducta',
+            resumen: 'Pequeños cambios, repetidos con constancia cada día, se acumulan de la misma forma que el interés compuesto.\n\nEl libro propone construir hábitos desde la identidad más que desde el resultado: no «quiero leer», sino «soy alguien que lee».',
+            encabezado: 'Las 4 leyes del cambio',
+            notas: [
+              'Mejorar solo un 1 % cada día multiplica resultados colosales con el paso del tiempo.',
+              'Cuatro leyes fundamentales: hacerlo obvio, atractivo, sencillo y satisfactorio.',
+              'Diseñar el entorno físico pesa más que confiar ciegamente en la fuerza de voluntad.',
+              'Los sistemas importan infinitamente más que las metas aisladas.'
+            ]
+          },
+          {
+            id: 'lecturas-3',
+            titulo: 'Cómo tomar notas inteligentes',
+            autor: 'Sönke Ahrens',
+            color: 'verde',
+            categoria: 'Libro · Aprendizaje',
+            resumen: 'El método Zettelkasten del sociólogo Niklas Luhmann explicado paso a paso para estudiantes, investigadores y escritores.\n\nTransforma la lectura pasiva en una red interconectada de ideas duraderas.',
+            encabezado: 'Principios Zettelkasten',
+            notas: [
+              'Distingue tres tipos de notas: notas fugaces, notas de literatura y notas permanentes.',
+              'Cada nota permanente expresa una sola idea atómica redactada en tus propias palabras y se enlaza con otras.',
+              'Escribir no es el resultado final de pensar, es el medio a través del cual pensamos con claridad.'
+            ]
+          },
+          {
+            id: 'lecturas-4',
+            titulo: 'Deep Work',
+            autor: 'Cal Newport',
+            color: 'morado',
+            categoria: 'Libro · Productividad',
+            resumen: 'El trabajo profundo es la capacidad de concentrarse sin distracciones en tareas cognitivamente exigentes.\n\nEn una economía hiperconectada, esta habilidad se vuelve cada vez más escasa y, por lo tanto, más valiosa.',
+            encabezado: 'Estrategias de enfoque',
+            notas: [
+              'Contrasta tajantemente el trabajo profundo frente al trabajo superficial que llena la agenda sin generar impacto real.',
+              'Propone bloques de tiempo estrictamente protegidos y rituales deliberados de concentración.',
+              'Aprender a tolerar el aburrimiento y desintoxicarse del estímulo constante de las redes.'
+            ]
+          },
+          {
+            id: 'lecturas-5',
+            titulo: 'Sapiens',
+            autor: 'Yuval Noah Harari',
+            color: 'amarillo',
+            categoria: 'Libro · Historia y Evolución',
+            resumen: 'Un fascinante recorrido por la historia de nuestra especie, desde los primeros homínidos insignificantes en África oriental hasta los amos del planeta.',
+            encabezado: 'Las tres revoluciones',
+            notas: [
+              'Revolución cognitiva: la capacidad única de transmitir información sobre cosas que no existen físicamente (ficciones compartidas).',
+              'Revolución agrícola: el cultivo del trigo domesticó al ser humano y propició la creación de jerarquías sociales.',
+              'Revolución científica: la admisión formal de la ignorancia impulsó descubrimientos sin precedentes y la era moderna.'
+            ]
+          },
+          {
+            id: 'lecturas-6',
+            titulo: 'El hombre en busca de sentido',
+            autor: 'Viktor Frankl',
+            color: 'azul',
+            categoria: 'Libro · Psicología y Existencialismo',
+            resumen: 'Relato testimonial de su supervivencia en los campos de concentración nazis y los fundamentos de la logoterapia.\n\nAl ser humano se le puede arrebatar todo, salvo la última de las libertades humanas: la elección de la actitud personal.',
+            encabezado: 'Pilares de la Logoterapia',
+            notas: [
+              'La motivación primaria del ser humano no es el principio del placer ni el del poder, sino la voluntad de sentido.',
+              'Podemos hallar sentido en el trabajo o la creación, en el amor a otra persona y en la actitud ante el sufrimiento inevitable.'
+            ]
+          }
+        ]
+      },
+      {
+        rotulo: 'Cursos y Academia',
+        libros: [
+          {
+            id: 'cursos-1',
+            titulo: 'Power Apps',
+            autor: 'Platzi',
+            color: 'morado',
+            categoria: 'Curso · Automatización',
+            resumen: 'Desarrollo de aplicaciones de negocio con poco código (low-code), conectadas a múltiples orígenes de datos corporativos.',
+            encabezado: 'Temario y Apuntes',
+            notas: [
+              'Diseño de formularios dinámicos y galerías enlazadas a Dataverse y SharePoint.',
+              'Fórmulas declarativas con Power Fx para validación y lógica condicional.',
+              'Despliegue seguro con autenticación Azure Active Directory.'
+            ]
+          },
+          {
+            id: 'cursos-2',
+            titulo: 'Power Automate',
+            autor: 'Platzi',
+            color: 'azul',
+            categoria: 'Curso · Flujos de Trabajo',
+            resumen: 'Automatización de procesos repetitivos entre aplicaciones y servicios en la nube para reducir tareas manuales.',
+            encabezado: 'Hitos clave',
+            notas: [
+              'Creación de flujos automatizados con disparadores en la nube y por eventos.',
+              'Gestión de aprobaciones multinivel con tarjetas adaptativas en Microsoft Teams.',
+              'Manejo de excepciones y registro de auditoría en ejecuciones.'
+            ]
+          },
+          {
+            id: 'cursos-3',
+            titulo: 'Curso de Python',
+            autor: 'Día 6',
+            color: 'amarillo',
+            categoria: 'Curso · Programación',
+            resumen: 'Fundamentos prácticos del lenguaje Python enfocado en manipulación del sistema de archivos con pathlib y módulos estándar.',
+            encabezado: 'Proyecto realizado',
+            notas: [
+              'Desarrollo del Administrador de Recetas con lectura y escritura de directorios.',
+              'Manejo de excepciones FileNotFoundError y creación de estructuras robustas.',
+              'Buenas prácticas PEP 8 y documentación con docstrings limpios.'
+            ]
+          },
+          {
+            id: 'cursos-4',
+            titulo: 'Lectura y toma de notas',
+            autor: 'Curso',
+            color: 'rojo',
+            categoria: 'Curso · Metacognición',
+            resumen: 'Técnicas avanzadas para incrementar la comprensión lectora, retención de conceptos y síntesis analítica.',
+            encabezado: 'Metodología',
+            notas: [
+              'Lectura sintópica: comparar múltiples autores sobre un mismo dilema.',
+              'Técnica Feynman para validar la asimilación profunda de ideas complejas.',
+              'Revisión espaciada para evitar la curva del olvido.'
+            ]
+          }
+        ]
+      },
+      {
+        rotulo: 'Podcast y Crónicas',
+        libros: [
+          {
+            id: 'podcast-1',
+            titulo: 'Ejercicio y salud',
+            autor: 'Episodio 14',
+            color: 'verde',
+            categoria: 'Podcast · Bienestar',
+            resumen: 'Análisis de la ciencia del descanso, ritmos circadianos y entrenamiento de fuerza para la longevidad.',
+            encabezado: 'Notas de cabina',
+            notas: [
+              'La importancia de la exposición a luz solar en los primeros 30 minutos de la mañana.',
+              'Relación entre la masa muscular esquelética y la sensibilidad a la insulina.',
+              'Protocolos de sueño reparador y temperatura ambiente.'
+            ]
+          },
+          {
+            id: 'podcast-2',
+            titulo: 'Productividad',
+            autor: 'Episodio 28',
+            color: 'rojo',
+            categoria: 'Podcast · Hábitos',
+            resumen: 'Discusión sobre la ilusión del multitasking y el valor de la deliberación profunda en proyectos creativos.',
+            encabezado: 'Ideas para el guion',
+            notas: [
+              'La trampa de la productividad tóxica frente a la efectividad real.',
+              'Tiempos de recarga y desconexión sin remordimiento.',
+              'Regla de los dos minutos y lotes de tareas administrativas.'
+            ]
+          },
+          {
+            id: 'podcast-3',
+            titulo: 'Aprender a aprender',
+            autor: 'Video Ensayo',
+            color: 'morado',
+            categoria: 'Video · Neurociencia',
+            resumen: 'Mecanismos neurológicos de la memoria de trabajo, consolidación sináptica durante el sueño y modo difuso.',
+            encabezado: 'Guía de estudio',
+            notas: [
+              'Alternancia entre el modo enfocado (análisis) y el modo difuso (asociación libre).',
+              'La ilusión de competencia provocada por releer notas sin auto-evaluación.',
+              'La práctica deliberada en el límite de la habilidad actual.'
+            ]
+          }
+        ]
+      }
+    ];
+
+    // Estado global de la aplicación
+    let estantesData = [];
+    let audioActivo = true;
+    let libroAbiertoActual = null;
+    let elementoTomoSacado = null;
+
+    // --- Persistencia en LocalStorage ---
+    function cargarDatos() {
+      try {
+        const guardado = localStorage.getItem('ex_libris_biblioteca');
+        if (guardado) {
+          estantesData = JSON.parse(guardado);
+        } else {
+          estantesData = JSON.parse(JSON.stringify(CATALOGO_INICIAL));
+          guardarDatos();
+        }
+      } catch (e) {
+        console.error('Error cargando localStorage:', e);
+        estantesData = JSON.parse(JSON.stringify(CATALOGO_INICIAL));
+      }
+    }
+
+    function guardarDatos() {
+      try {
+        localStorage.setItem('ex_libris_biblioteca', JSON.stringify(estantesData));
+      } catch (e) {
+        console.error('Error guardando en localStorage:', e);
+      }
+    }
+
+    // --- Síntesis de Sonido Táctil con Web Audio API (Zero librerías) ---
+    let audioCtx = null;
+    function obtenerAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // Sonido sutil de madera/cuero al sacar el lomo
+    function reproducirSonidoExtraccion() {
+      if (!audioActivo) return;
+      try {
+        const ctx = obtenerAudioContext();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(160, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.16);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.16);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.16);
+      } catch (err) {}
+    }
+
+    // Sonido sutil de apertura de páginas de papel
+    function reproducirSonidoPaginas() {
+      if (!audioActivo) return;
+      try {
+        const ctx = obtenerAudioContext();
+        if (!ctx) return;
+        const bufferSize = ctx.sampleRate * 0.22;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.05));
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1400;
+        filter.Q.value = 1.0;
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.06, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start();
+      } catch (err) {}
+    }
+
+    // --- Renderizado del Mueble y los Estantes ---
+    function renderizarBiblioteca() {
+      const container = document.getElementById('muebleContainer');
+      container.innerHTML = '';
+
+      let totalTomos = 0;
+
+      estantesData.forEach((estante, indexEstante) => {
+        totalTomos += (estante.libros || []).length;
+
+        const estanteEl = document.createElement('section');
+        estanteEl.className = 'xl-estante';
+        estanteEl.setAttribute('aria-label', estante.rotulo || 'Estante');
+
+        // Hueco oscuro donde reposan los libros
+        const huecoEl = document.createElement('div');
+        huecoEl.className = 'xl-estante__hueco';
+
+        const librosEl = document.createElement('div');
+        librosEl.className = 'xl-estante__libros';
+        librosEl.id = `estante-libros-${indexEstante}`;
+
+        (estante.libros || []).forEach((libro, indexLibro) => {
+          if (!libro.id) libro.id = `${indexEstante}-${indexLibro}`;
+          const tomoBtn = crearElementoTomo(libro, indexEstante, indexLibro);
+          librosEl.appendChild(tomoBtn);
+        });
+
+        huecoEl.appendChild(librosEl);
+
+        // Tabla de nogal con placa de latón
+        const tablaEl = document.createElement('div');
+        tablaEl.className = 'xl-estante__tabla';
+        if (estante.rotulo) {
+          const placaEl = document.createElement('span');
+          placaEl.className = 'xl-estante__placa';
+          placaEl.textContent = estante.rotulo;
+          tablaEl.appendChild(placaEl);
+        }
+
+        estanteEl.appendChild(huecoEl);
+        estanteEl.appendChild(tablaEl);
+        container.appendChild(estanteEl);
+      });
+
+      // Actualizar lema en la cabecera
+      const lemaEl = document.getElementById('biblioteca-lema');
+      lemaEl.textContent = `${totalTomos} tomos · ${estantesData.length} estantes · Toca un lomo para sacarlo y abrirlo`;
+
+      // Actualizar selector de estantes en el modal de nuevo tomo
+      actualizarSelectEstantes();
+    }
+
+    // Crea el botón del lomo (Tomo) con las medidas y estilos exactos
+    function crearElementoTomo(libro, indexEstante, indexLibro) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `xl-tomo xl-tomo--${libro.color || 'azul'}`;
+      btn.dataset.id = libro.id;
+      btn.dataset.titulo = (libro.titulo || '').toLowerCase();
+      btn.dataset.autor = (libro.autor || '').toLowerCase();
+      btn.dataset.categoria = (libro.categoria || '').toLowerCase();
+      btn.title = `${libro.titulo}${libro.autor ? ' — ' + libro.autor : ''}`;
+      btn.setAttribute('aria-label', `Abrir «${libro.titulo}»${libro.autor ? ', de ' + libro.autor : ''}`);
+      btn.setAttribute('aria-haspopup', 'dialog');
+
+      // Bandas doradas superior e inferior
+      const bandaArr = document.createElement('span');
+      bandaArr.className = 'xl-tomo__banda xl-tomo__banda--arriba';
+      bandaArr.setAttribute('aria-hidden', 'true');
+
+      const bandaAbj = document.createElement('span');
+      bandaAbj.className = 'xl-tomo__banda xl-tomo__banda--abajo';
+      bandaAbj.setAttribute('aria-hidden', 'true');
+
+      // Texto vertical del lomo
+      const lomoTexto = document.createElement('span');
+      lomoTexto.className = 'xl-tomo__lomo';
+      lomoTexto.setAttribute('aria-hidden', 'true');
+
+      const tituloSpan = document.createElement('span');
+      tituloSpan.className = 'xl-tomo__titulo';
+      tituloSpan.textContent = libro.titulo;
+      lomoTexto.appendChild(tituloSpan);
+
+      if (libro.autor) {
+        const autorSpan = document.createElement('span');
+        autorSpan.className = 'xl-tomo__autor';
+        autorSpan.textContent = libro.autor;
+        lomoTexto.appendChild(autorSpan);
+      }
+
+      btn.appendChild(bandaArr);
+      btn.appendChild(lomoTexto);
+      btn.appendChild(bandaAbj);
+
+      // Evento al pulsar el lomo
+      btn.addEventListener('click', (ev) => {
+        abrirLibro(libro, btn);
+      });
+
+      return btn;
+    }
+
+    // --- Mecánica de Sacar y Abrir el Libro ---
+    function abrirLibro(libro, tomoBtn) {
+      elementoTomoSacado = tomoBtn;
+      tomoBtn.classList.add('is-sacado');
+      reproducirSonidoExtraccion();
+
+      const reduccionMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const retrasoApertura = reduccionMovimiento ? 0 : 320;
+
+      setTimeout(() => {
+        libroAbiertoActual = libro;
+        renderizarLibroAbierto(libro);
+        reproducirSonidoPaginas();
+      }, retrasoApertura);
+    }
+
+    function renderizarLibroAbierto(libro) {
+      const sala = document.getElementById('modalSala');
+      sala.innerHTML = '';
+      sala.style.display = 'flex';
+      sala.setAttribute('aria-label', libro.titulo);
+
+      const color = libro.color || 'azul';
+      const animar = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Estructura del libro abierto
+      const articulo = document.createElement('article');
+      articulo.className = `xl-libro xl-libro--${color} ${animar ? 'is-abriendo' : ''}`;
+      articulo.setAttribute('aria-label', libro.titulo);
+
+      // TAPA IZQUIERDA Y HOJA IZQUIERDA
+      const tapaIzq = document.createElement('div');
+      tapaIzq.className = 'xl-libro__tapa xl-libro__tapa--izq';
+
+      const paginaIzq = document.createElement('div');
+      paginaIzq.className = 'xl-pagina xl-pagina--izq';
+
+      if (libro.categoria) {
+        const cat = document.createElement('p');
+        cat.className = 'xl-pagina__categoria';
+        cat.textContent = libro.categoria;
+        paginaIzq.appendChild(cat);
+      }
+
+      const tit = document.createElement('h2');
+      tit.className = 'xl-pagina__titulo';
+      tit.textContent = libro.titulo;
+      paginaIzq.appendChild(tit);
+
+      if (libro.autor) {
+        const aut = document.createElement('p');
+        aut.className = 'xl-pagina__autor';
+        aut.textContent = libro.autor;
+        paginaIzq.appendChild(aut);
+      }
+
+      const filete = document.createElement('hr');
+      filete.className = 'xl-pagina__filete';
+      paginaIzq.appendChild(filete);
+
+      const textoResumen = document.createElement('div');
+      textoResumen.className = 'xl-pagina__texto';
+      if (typeof libro.resumen === 'string') {
+        libro.resumen.split(/\n\s*\n/).forEach(p => {
+          const pEl = document.createElement('p');
+          pEl.textContent = p;
+          textoResumen.appendChild(pEl);
+        });
+      } else if (Array.isArray(libro.resumen)) {
+        libro.resumen.forEach(p => {
+          const pEl = document.createElement('p');
+          pEl.textContent = p;
+          textoResumen.appendChild(pEl);
+        });
+      }
+      paginaIzq.appendChild(textoResumen);
+      tapaIzq.appendChild(paginaIzq);
+
+      // TAPA DERECHA Y HOJA DERECHA
+      const tapaDer = document.createElement('div');
+      tapaDer.className = 'xl-libro__tapa xl-libro__tapa--der';
+
+      const paginaDer = document.createElement('div');
+      paginaDer.className = 'xl-pagina xl-pagina--der';
+
+      const enc = document.createElement('p');
+      enc.className = 'xl-pagina__categoria';
+      enc.textContent = libro.encabezado || 'Notas e Ideas Clave';
+      paginaDer.appendChild(enc);
+
+      const textoNotas = document.createElement('div');
+      textoNotas.className = 'xl-pagina__texto';
+
+      if (Array.isArray(libro.notas)) {
+        const ul = document.createElement('ul');
+        libro.notas.forEach(nota => {
+          const li = document.createElement('li');
+          li.textContent = nota;
+          ul.appendChild(li);
+        });
+        textoNotas.appendChild(ul);
+      } else if (typeof libro.notas === 'string') {
+        libro.notas.split(/\n\s*\n/).forEach(p => {
+          const pEl = document.createElement('p');
+          pEl.textContent = p;
+          textoNotas.appendChild(pEl);
+        });
+      }
+      paginaDer.appendChild(textoNotas);
+      tapaDer.appendChild(paginaDer);
+
+      articulo.appendChild(tapaIzq);
+      articulo.appendChild(tapaDer);
+
+      // PORTADA 3D QUE GIRA SOBRE EL LOMO
+      if (animar) {
+        const portada = document.createElement('div');
+        portada.className = 'xl-libro__portada';
+        portada.setAttribute('aria-hidden', 'true');
+
+        const marco = document.createElement('div');
+        marco.className = 'xl-libro__marco';
+
+        const pTit = document.createElement('span');
+        pTit.className = 'xl-libro__portada-titulo';
+        pTit.textContent = libro.titulo;
+
+        marco.appendChild(pTit);
+
+        if (libro.autor) {
+          const pAut = document.createElement('span');
+          pAut.className = 'xl-libro__portada-autor';
+          pAut.textContent = libro.autor;
+          marco.appendChild(pAut);
+        }
+
+        portada.appendChild(marco);
+        articulo.appendChild(portada);
+      }
+
+      // ACCIONES DE LA SALA: Botón de latón «Devolver al estante»
+      const acciones = document.createElement('div');
+      acciones.className = 'xl-sala__actions';
+
+      const btnDevolver = document.createElement('button');
+      btnDevolver.type = 'button';
+      btnDevolver.className = 'xl-boton';
+      btnDevolver.id = 'btnDevolver';
+      btnDevolver.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 14 4 9 9 4"></polyline>
+          <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+        </svg>
+        <span>Devolver al estante</span>
+      `;
+      btnDevolver.addEventListener('click', cerrarLibro);
+
+      acciones.appendChild(btnDevolver);
+
+      sala.appendChild(articulo);
+      sala.appendChild(acciones);
+
+      // Foco automático en el botón de latón
+      setTimeout(() => btnDevolver.focus(), 150);
+
+      // Cierre con clic en el velo exterior
+      sala.onclick = function (e) {
+        if (e.target === sala) cerrarLibro();
+      };
+    }
+
+    function cerrarLibro() {
+      const sala = document.getElementById('modalSala');
+      sala.style.display = 'none';
+      sala.innerHTML = '';
+      libroAbiertoActual = null;
+
+      if (elementoTomoSacado) {
+        elementoTomoSacado.classList.remove('is-sacado');
+        try { elementoTomoSacado.focus(); } catch (e) {}
+        elementoTomoSacado = null;
+      }
+      reproducirSonidoExtraccion();
+    }
+
+    // Tecla Escape para cerrar
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape') {
+        const dialogNuevo = document.getElementById('dialogNuevoTomo');
+        if (dialogNuevo && dialogNuevo.style.display !== 'none') {
+          cerrarModalNuevoTomo();
+          return;
+        }
+        if (libroAbiertoActual) {
+          cerrarLibro();
+        }
+      }
+    });
+
+    // --- Buscador en Tiempo Real ---
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      const todosTomos = document.querySelectorAll('.xl-tomo');
+
+      todosTomos.forEach(tomo => {
+        if (!q) {
+          tomo.classList.remove('is-hidden');
+          return;
+        }
+        const tit = tomo.dataset.titulo || '';
+        const aut = tomo.dataset.autor || '';
+        const cat = tomo.dataset.categoria || '';
+        if (tit.includes(q) || aut.includes(q) || cat.includes(q)) {
+          tomo.classList.remove('is-hidden');
+        } else {
+          tomo.classList.add('is-hidden');
+        }
+      });
+    });
+
+    // --- Selector de Tema Día / Noche (Lámpara) ---
+    const btnToggleTheme = document.getElementById('btnToggleTheme');
+    const iconLuzDia = document.getElementById('iconLuzDia');
+    const iconLuzNoche = document.getElementById('iconLuzNoche');
+
+    function fijarTema(tema) {
+      document.documentElement.setAttribute('data-theme', tema);
+      if (tema === 'noche') {
+        iconLuzDia.style.display = 'none';
+        iconLuzNoche.style.display = 'block';
+        btnToggleTheme.title = 'Modo Noche activo. Clic para cambiar a iluminación de Día';
+      } else {
+        iconLuzDia.style.display = 'block';
+        iconLuzNoche.style.display = 'none';
+        btnToggleTheme.title = 'Modo Día activo. Clic para cambiar a iluminación de Noche';
+      }
+      localStorage.setItem('ex_libris_tema', tema);
+    }
+
+    btnToggleTheme.addEventListener('click', () => {
+      const actual = document.documentElement.getAttribute('data-theme') || 'dia';
+      fijarTema(actual === 'dia' ? 'noche' : 'dia');
+    });
+
+    const temaGuardado = localStorage.getItem('ex_libris_tema') || 'dia';
+    fijarTema(temaGuardado);
+
+    // --- Control de Sonido ---
+    const btnToggleAudio = document.getElementById('btnToggleAudio');
+    const iconAudioOn = document.getElementById('iconAudioOn');
+    const iconAudioOff = document.getElementById('iconAudioOff');
+
+    btnToggleAudio.addEventListener('click', () => {
+      audioActivo = !audioActivo;
+      if (audioActivo) {
+        iconAudioOn.style.display = 'block';
+        iconAudioOff.style.display = 'none';
+        btnToggleAudio.title = 'Sonido táctil activado';
+        obtenerAudioContext();
+        reproducirSonidoExtraccion();
+      } else {
+        iconAudioOn.style.display = 'none';
+        iconAudioOff.style.display = 'block';
+        btnToggleAudio.title = 'Sonido táctil desactivado';
+      }
+    });
+
+    // --- Modal para Agregar Nuevo Tomo ---
+    const btnNuevoTomo = document.getElementById('btnNuevoTomo');
+    const dialogNuevoTomo = document.getElementById('dialogNuevoTomo');
+    const btnCerrarModal = document.getElementById('btnCerrarModal');
+    const btnCancelarNuevo = document.getElementById('btnCancelarNuevo');
+    const formNuevoTomo = document.getElementById('formNuevoTomo');
+    const selEstante = document.getElementById('selEstante');
+    const colorPicker = document.getElementById('colorPicker');
+    const inpHiddenColor = document.getElementById('inpHiddenColor');
+
+    function actualizarSelectEstantes() {
+      selEstante.innerHTML = '';
+      estantesData.forEach((est, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = est.rotulo || `Estante ${idx + 1}`;
+        selEstante.appendChild(opt);
+      });
+      const optNuevo = document.createElement('option');
+      optNuevo.value = 'nuevo';
+      optNuevo.textContent = '+ Crear nuevo estante...';
+      selEstante.appendChild(optNuevo);
+    }
+
+    btnNuevoTomo.addEventListener('click', () => {
+      dialogNuevoTomo.style.display = 'flex';
+      document.getElementById('inpTitulo').focus();
+    });
+
+    function cerrarModalNuevoTomo() {
+      dialogNuevoTomo.style.display = 'none';
+      formNuevoTomo.reset();
+    }
+
+    btnCerrarModal.addEventListener('click', cerrarModalNuevoTomo);
+    btnCancelarNuevo.addEventListener('click', cerrarModalNuevoTomo);
+    dialogNuevoTomo.onclick = (e) => {
+      if (e.target === dialogNuevoTomo) cerrarModalNuevoTomo();
+    };
+
+    // Color picker
+    colorPicker.querySelectorAll('.xl-color-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        colorPicker.querySelectorAll('.xl-color-option').forEach(o => o.classList.remove('is-selected'));
+        opt.classList.add('is-selected');
+        inpHiddenColor.value = opt.dataset.color;
+      });
+    });
+
+    // Envío del formulario de nuevo tomo
+    formNuevoTomo.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const titulo = document.getElementById('inpTitulo').value.trim();
+      const autor = document.getElementById('inpAutor').value.trim();
+      let estanteIdx = selEstante.value;
+      const categoria = document.getElementById('inpCategoria').value.trim() || 'Libro';
+      const color = inpHiddenColor.value || 'azul';
+      const resumen = document.getElementById('inpResumen').value.trim() || 'Sin resumen registrado.';
+      const notasRaw = document.getElementById('inpNotas').value.trim();
+      const notas = notasRaw ? notasRaw.split('\n').filter(s => s.trim().length > 0) : ['Apunta tus notas aquí.'];
+
+      if (estanteIdx === 'nuevo') {
+        const nombreNuevoEstante = prompt('Nombre para el nuevo estante:', 'Colección Personal');
+        if (!nombreNuevoEstante) return;
+        estantesData.push({
+          rotulo: nombreNuevoEstante,
+          libros: []
+        });
+        estanteIdx = estantesData.length - 1;
+      } else {
+        estanteIdx = parseInt(estanteIdx, 10);
+      }
+
+      const nuevoLibro = {
+        id: `libro-${Date.now()}`,
+        titulo,
+        autor,
+        color,
+        categoria,
+        resumen,
+        encabezado: 'Notas e Ideas Clave',
+        notas
+      };
+
+      estantesData[estanteIdx].libros.push(nuevoLibro);
+      guardarDatos();
+      renderizarBiblioteca();
+      cerrarModalNuevoTomo();
+
+      // Animación al nuevo libro
+      setTimeout(() => {
+        const nuevoBtn = document.querySelector(`.xl-tomo[data-id="${nuevoLibro.id}"]`);
+        if (nuevoBtn) {
+          nuevoBtn.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+          nuevoBtn.style.animation = 'xl-velo 400ms ease';
+        }
+      }, 100);
+    });
+
+    // --- Inicialización ---
+    cargarDatos();
+    renderizarBiblioteca();
+  </script>
+</body>
+</html>

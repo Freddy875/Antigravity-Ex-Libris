@@ -1,0 +1,53 @@
+<!-- @dsCard group="Mueble" height=1080 subtitle="La sala completa: toca un lomo para sacarlo y abrirlo" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Biblioteca — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var X = window.ExLibris, h = React.createElement;
+  var estantes = [
+    { rotulo: 'Lecturas', libros: [
+      { titulo: 'Comer animales', autor: 'Jonathan Safran Foer', color: 'rojo', categoria: 'Libro · Ensayo',
+        resumen: 'Una investigación personal que empieza con una pregunta de padre: qué dar de comer a su hijo.',
+        notas: ['Examina la ganadería industrial y sus efectos en los animales, la salud y el ambiente.', 'Mezcla reportaje, entrevistas a granjeros y activistas, y memoria familiar.'] },
+      { titulo: 'Hábitos atómicos', autor: 'James Clear', color: 'azul', categoria: 'Libro · Hábitos',
+        resumen: 'Pequeños cambios, repetidos cada día, se acumulan como el interés compuesto.',
+        encabezado: 'Ideas clave',
+        notas: ['Mejorar un 1 % cada día se acumula con el tiempo.', 'Cuatro leyes: hacerlo obvio, atractivo, sencillo y satisfactorio.', 'Los hábitos se anclan en la identidad.'] },
+      { titulo: 'Cómo tomar notas inteligentes', autor: 'Sönke Ahrens', color: 'verde', categoria: 'Libro · Aprendizaje',
+        resumen: 'El método Zettelkasten de Niklas Luhmann explicado para estudiar y escribir.',
+        notas: ['Notas fugaces, de literatura y permanentes.', 'Cada nota permanente expresa una sola idea y se enlaza con otras.', 'Escribir es la forma de pensar.'] },
+      { titulo: 'Deep Work', autor: 'Cal Newport', color: 'morado', categoria: 'Libro · Productividad',
+        resumen: 'El trabajo profundo: concentración sin distracciones en tareas exigentes.',
+        notas: ['Contrasta el trabajo profundo con el superficial.', 'Propone bloques de tiempo protegidos y rituales de trabajo.'] },
+      { titulo: 'Sapiens', autor: 'Yuval Noah Harari', color: 'amarillo', categoria: 'Libro · Historia',
+        resumen: 'Una historia de la humanidad desde la revolución cognitiva.',
+        notas: ['Tres revoluciones: cognitiva, agrícola y científica.', 'Las ficciones compartidas permiten cooperar a gran escala.'] },
+      { titulo: 'El hombre en busca de sentido', autor: 'Viktor Frankl', color: 'azul', categoria: 'Libro · Psicología',
+        resumen: 'Su experiencia en los campos de concentración y el origen de la logoterapia.',
+        notas: ['La búsqueda de sentido como motivación principal del ser humano.'] }
+    ] },
+    { rotulo: 'Cursos', libros: [
+      { titulo: 'Power Apps', autor: 'Platzi', color: 'morado', categoria: 'Curso',
+        resumen: 'Aplicaciones de negocio con poco código, conectadas a datos.', notas: 'Agrega aquí tus apuntes del curso.' },
+      { titulo: 'Power Automate', autor: 'Platzi', color: 'azul', categoria: 'Curso',
+        resumen: 'Flujos que automatizan tareas entre aplicaciones.', notas: 'Agrega aquí tus apuntes del curso.' },
+      { titulo: 'Curso de Python', autor: 'Día 6', color: 'amarillo', categoria: 'Curso · Programación',
+        resumen: 'Prácticas con pathlib y archivos.', encabezado: 'Proyecto',
+        notas: ['Administrador de recetas (carpeta Recetas).'] },
+      { titulo: 'Lectura y toma de notas', autor: 'Curso', color: 'rojo', categoria: 'Curso · Aprendizaje',
+        resumen: 'Técnicas para leer mejor y recordar lo leído.', notas: 'Agrega aquí tus apuntes del curso.' }
+    ] },
+    { rotulo: 'Podcast y videos', libros: [
+      { titulo: 'Ejercicio y salud', autor: 'Episodio', color: 'verde', categoria: 'Podcast', resumen: 'Notas del episodio.', notas: 'Ideas para el guion.' },
+      { titulo: 'Productividad', autor: 'Episodio', color: 'rojo', categoria: 'Podcast', resumen: 'Notas del episodio.', notas: 'Ideas para el guion.' },
+      { titulo: 'Aprender a aprender', autor: 'Video', color: 'morado', categoria: 'Video', resumen: 'Notas del video.', notas: 'Ideas para el guion.' }
+    ] }
+  ];
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h(X.Biblioteca, { nombre: 'Mi biblioteca', lema: '13 tomos · 3 estantes · toca un lomo para abrirlo', estantes: estantes })
+  );
+</script>
+</body>
+</html>
